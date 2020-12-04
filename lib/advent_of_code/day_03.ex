@@ -13,22 +13,30 @@ defmodule AdventOfCode.Day03 do
     |> File.stream!()
     |> Enum.map(fn(row) ->
       row
+      |> String.trim()
       |> String.split("")
+      |> Enum.reject(&(&1 == ""))
+      |> List.duplicate(50)
+      |> List.flatten()
     end)
   end
 
   defp traverse_path(grid) do
     grid
-    |> Enum.reduce({1, []}, fn(row, {starting_location, path}) ->
+    |> Enum.reduce({-3, []}, fn(row, {starting_location, path}) ->
       current_location = starting_location + 3
       object = Enum.at(row, current_location)
+      |> IO.inspect(label: :object)
+
       {current_location, [object|path]}
     end)
     |> elem(1)
+    |> IO.inspect(label: :objects)
   end
 
   defp count_trees(list_of_objects) do
     list_of_objects
+    |> IO.inspect(label: :list_of_objects)
     |> Enum.filter(fn(row) -> row == "#" end)
     |> Enum.count()
   end
