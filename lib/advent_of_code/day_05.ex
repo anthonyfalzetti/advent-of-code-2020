@@ -6,6 +6,22 @@ defmodule AdventOfCode.Day05 do
   end
 
   def part2(_args) do
+    parse_input()
+    |> Enum.map(&(calucalte_seat_id(&1)))
+    |> Enum.sort()
+    |> Enum.reduce_while(60, fn(id, acc) ->
+      case id - acc do
+        1 ->
+          {:cont, id}
+        _other ->
+          IO.inspect """
+          id: #{id}
+          acc: #{acc}
+          """
+
+          {:halt, id - 1}
+      end
+    end)
   end
 
   defp calucalte_seat_id({row_list, column_list}) do
